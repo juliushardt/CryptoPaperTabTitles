@@ -1,6 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "Crypto Paper Tab Titles",
+    "name": "Crypto Research Paper Tab Titles",
+    "description": "Replaces the tab title of PDFs on IACR eprint (an archive for cryptographic research papers) with the actual title of the paper.",
     "version": "0.1",
     "content_scripts": [
         {
@@ -15,5 +16,11 @@
     "permissions": ["storage"],
     "host_permissions": [
         "https://eprint.iacr.org/*.pdf"
-    ]
+    ],
+    "icons": {
+        "16": "icon16.png",
+        "32": "icon32.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    }
 }
