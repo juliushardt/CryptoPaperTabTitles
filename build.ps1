@@ -1,5 +1,7 @@
+#!/usr/bin/env pwsh
+
 if (!(Test-Path -Path "dist")) {
-    New-Item -ItemType Directory -Name "dist"
+    New-Item -ItemType Directory -Name "dist" > $null
 }
 
 $outputDirectory = "dist/CryptoResearchPaperTabTitles"
@@ -7,7 +9,7 @@ if (Test-Path -Path $outputDirectory) {
     Remove-Item -Recurse -Path $outputDirectory
 }
 
-New-Item -ItemType Directory -Path $outputDirectory
+New-Item -ItemType Directory -Path $outputDirectory > $null
 Copy-Item -Path "manifest.json" -Destination $outputDirectory
 Copy-Item -Path "src/content.js" -Destination $outputDirectory
 Copy-Item -Path "src/service-worker.js" -Destination $outputDirectory
