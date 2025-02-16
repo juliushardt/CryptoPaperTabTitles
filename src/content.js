@@ -1,4 +1,6 @@
 (async function() {
+    const browser = "___BROWSER___"; // Set via build script.
+
     if (document.location.hostname !== "eprint.iacr.org") {
         return;
     }
@@ -18,24 +20,31 @@
     //    about (external) changes to the title of the browser tab.
     // 2. It seems like we can set document.title only once, i.e. all further calls to document.title= are ignored.
     //    Hence, we have to wait for the browser to set "its" title before we use our one and only call to the setter of document.title.
+    // In Safari, no such workaround is necessary, i.e., we can set the tab title directly in this browser.
     let newTabTitle = null;
     let browserSetItsTitle = false;
-    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-        if (request.msg === "title_changed") {
-            if (newTabTitle) {
-                console.log("[Crypto Paper Tab Titles] New title notification:", request.newTitle);
-                console.log("[Crypto Paper Tab Titles] We were faster to fetch the new title than the PDF viewer to set its own title, so overwriting it now...");
-                document.title = newTabTitle;
+    if (browser === "Chrome") {
+        chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+            if (request.msg === "title_changed") {
+                if (newTabTitle) {
+                    console.log("[Crypto Paper Tab Titles] New title notification:", request.newTitle);
+                    console.log("[Crypto Paper Tab Titles] We were faster to fetch the new title than the PDF viewer to set its own title, so overwriting it now...");
+                    document.title = newTabTitle;
+                }
+                browserSetItsTitle = true;
             }
-            browserSetItsTitle = true;
-        }
-    });
+        });
+    }
 
     const paperMetadata = await retrievePaperMetadata(year, number);
     if (paperMetadata) {
         newTabTitle = `${paperMetadata.title} - ${paperMetadata.authors} - ${year}/${number}.pdf`;
         if (browserSetItsTitle) {
             console.log("[Crypto Paper Tab Titles] The PDF viewer was faster to set its own title than we were to fetch the new title, so we can now safely set it...");
+            document.title = newTabTitle;
+        }
+        else if (browser !== "Chrome") {
+            console.log("[Crypto Paper Tab Titles] Not running in Chrome/Edge. Setting title directly...");
             document.title = newTabTitle;
         }
     }

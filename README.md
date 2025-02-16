@@ -24,9 +24,17 @@ Every time you open a research paper on IACR eprint in your browser, the extensi
 PowerShell is required to build the extension.
 Please refer to  [Install PowerShell on Windows, Linux, and macOS](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell) on learn.microsoft.com for installation instructions.
 
-### Building
-Make sure your current working directory is the root folder of this repository and then run `build.ps1`.
+### Building for Chrome/Edge
+Make sure your current working directory is the root folder of this repository and then run `build_Chrome.ps1`.
+Afterwards, you can load the extension from `dist/Chrome/CryptoResearchPaperTabTitles`.
+To distribute the extension as a ZIP file, run `pack_Chrome.ps1`.
+The resulting ZIP archive is saved in `dist/Chrome`.
 
+### Building for Safari
+Make sure your current working directory is the root folder of this repository and then run `build_Safari.ps1`.
+Afterwards, you can open and run the Xcode project under `native/Safari/CryptoResearchPaperTabTitles`.
+
+### Building the icon
 To build the icon, additional prerequisites are needed.
 However, if you do not want to modify the icon, you do not need them.
 Please refer to the `icon` folder for more details.
